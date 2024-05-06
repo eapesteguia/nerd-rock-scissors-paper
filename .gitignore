@@ -1,0 +1,7 @@
+#ignore config for GIT
+.vscode/
+.sass-cache
+.env
+pruebas.js
+nofunciona.js
+*.txt
