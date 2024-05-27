@@ -1,14 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
     <title>Piedra, papel o tijeras</title>
 </head>
+
 <body>
-    <h1>Jugá piedra, papel o tijeras</h1>
-    <p>Jugás contra la PC desde la consola (F12). El mejor de 3 intentos gana la partida!</p>
-<script src="./main.js"></script>    
+    <header></header>
+
+    <div class="tablero-resultados">
+        <div id="etiqueta-usuario" class="insignia">VOS</div>
+        <div id="etiqueta-computadora" class="insignia">PC</div>
+        <span id="puntuacion-usuario">0</span>:<span id="puntuacion-computadora">0</span>
+    </div>
+
+    <div class="resultado">
+        <h3>Jugá piedra, papel o tijeras!</h3>
+        <p></p>
+    </div>
+
+    <div class="opciones">
+        <div class="opcion" id="piedra">
+            <!-- <button>👊</button> / alternativa: lo podría hacer con emojis, sin usar imágenes -->
+            <img src="./piedra.png" title="Piedra" alt="Emoji de puño de WhatsApp">
+        </div>
+        <div class="opcion" id="papel">
+            <img src="./papel.png" title="Papel" alt="Emoji de mano levantada de WhatsApp">
+        </div>
+
+        <div class="opcion" id="tijeras">
+            <img src="./tijeras.png" title="Tijeras" alt="Emoji dedos como tijeras de WhatsApp">
+        </div>
+    </div>
+
+    <div class="reglas">
+        <h3>Las reglas son simples:</h3>
+        <ul>
+            <li>1. Piedra rompe las Tijeras</li>
+            <li>2. Papel envuelve a Piedra</li>
+            <li>3. Tijeras cortan el Papel</li>
+        </ul>
+    </div>
+
+    <footer>
+        <p>Segunda entrega del proyecto Javascript • Comisión 61990 • 2024</p>
+    </footer>
+
+    <script src="./main.js"></script>
 </body>
+
 </html>
