@@ -1,67 +1,77 @@
-// inicio del juego + cacheo del DOM
-let puntajeJugador = 0; 
+// variables globales + cacheo del DOM
+let puntajeJugador = 0;
 let puntajeComputadora = 0;
 const puntuacionUsuario_span = document.getElementById("puntuacion-usuario");
-const puntuacionComputadora_span = document.getElementById("puntuacion-computadora"); 
-const tableroResultados_div = document.querySelector(".tablero-resultados");
+const puntuacionComputadora_span = document.getElementById("puntuacion-computadora");
 const resultado_div = document.querySelector(".resultado h3");
 const resultadoReglas_div = document.querySelector(".resultado p");
-const piedra_div = document.getElementById("piedra");
-const papel_div = document.getElementById("papel");
-const tijeras_div = document.getElementById("tijeras");
+const opciones_div = document.querySelector(".opciones");
+const resetearPuntajeDelJuego = document.getElementById("resetear-puntuacion").addEventListener("click", resetearPuntuacion);
 
-// opciones para jugar, más adelante puedo agregar lagarto y spock para hacerlo de 5 opciones
-const opciones = ['piedra', 'papel', 'tijeras'];
+Swal.fire({
+    title: 'Acá podés jugar contra la PC una versión <i>nerd</i> del famoso juego de manos "Piedra, Papel o Tijeras"',
+    width: 600,
+    padding: "2em",
+    color: "#716add",
+    background: "#fff",
+        backdrop: `
+      rgba(0,0,123,0.4)
+      url("./img/nyan-cat.gif")
+      left top
+      no-repeat
+    `,
+    footer: '<i></i><a href="https://youtu.be/_tsy4q9ibAE?si=9tYGfZTgMuo7ELvI&t=23" target="_blank" title="Link al video en Youtube. Está en Español =)">Ó podés mirar la explicación de Sheldon Cooper en TBBT</a></i>'
+  });
 
-// elegir una de las 3 opciones de forma aleatoria
-function obtenerEleccionComputadora() {
-    return opciones[Math.floor(Math.random() * opciones.length)];  // recomendación de ChatGTP para simplificar el código y no usar la variable "opción"
-}
+// reglas del juego
+const reglas = {
+    piedra: ["tijeras", "lagarto"],
+    papel: ["piedra", "spock"],
+    tijeras: ["papel", "lagarto"],
+    lagarto: ["papel", "spock"],
+    spock: ["piedra", "tijeras"]
+};
 
-// función principal + lógica de quién gana
+// recuperar opciones del archivo JSON y mostrarlas en el HTML
+const crearOpciones = (opcion) => {
+    const crearCadaOpcion = document.createElement("div");
+    crearCadaOpcion.className = "opcion";
+    crearCadaOpcion.id = opcion.id;
+    crearCadaOpcion.innerHTML = `<img src="${opcion.imagen}" title="${opcion.nombre}" alt="${opcion.descripcion}">`;
+    opciones_div.append(crearCadaOpcion);
+    crearCadaOpcion.addEventListener('click', () => juego(opcion.id));
+};
+
+const recuperarOpciones = async () => {
+    try {
+        const respuesta = await fetch("./opciones.json");
+        const levantarOpciones = await respuesta.json();
+        levantarOpciones.forEach(opcion => crearOpciones(opcion));
+    } catch (error) {
+        console.log("Error al recuperar las opciones del juego (JSON)");
+    }
+};
+recuperarOpciones();
+
+// obtener eleccion de la computadora
+const obtenerEleccionComputadora = () => {
+    const opciones = Object.keys(reglas);
+    return opciones[Math.floor(Math.random() * opciones.length)];
+};
+
+// función principal del juego + lógica de victoria, derrota y empate
 function juego(seleccionJugador) {
     const seleccionComputadora = obtenerEleccionComputadora();
-    switch (seleccionJugador + seleccionComputadora) {
-        case "piedratijeras":
-        case "papelpiedra":
-        case "tijeraspapel":
-            victoria(seleccionJugador, seleccionComputadora);
-            break;
-        case "piedrapapel":
-        case "papeltijeras":
-        case "tijeraspiedra":
-            derrota(seleccionJugador, seleccionComputadora);
-            break;
-        case "piedrapiedra":
-        case "papelpapel":
-        case "tijerastijeras":
-            empate(seleccionJugador, seleccionComputadora);
-            break;    
-    } 
-}
-
-// para definir quién gana
-function victoria(opcionUsuario, opcionComputadora) {
-    actualizarPuntuacion(true);
-    mostrarResultado('Ganaste✔️', opcionUsuario, opcionComputadora, 'verde', 'le gana a');
-}
-
-// para definir quién pierde
-function derrota(opcionUsuario, opcionComputadora) {
-    actualizarPuntuacion(false);
-    mostrarResultado('Perdiste❌', opcionUsuario, opcionComputadora, 'rojo', 'pierde contra');
-}
-
-// para definir si hay empate
-function empate(opcionUsuario, opcionComputadora) {
-    const vosPequeno = "(Vos)".fontsize(2).sup();
-    const pcPequeno = "(PC)".fontsize(2).sup();
-    const eleccionJugador_div = document.getElementById(opcionUsuario);
-    resultado_div.innerHTML = `Empate...`;
-    resultadoReglas_div.innerHTML = `${primeraEnMayusculas(opcionUsuario)}${vosPequeno} es igual a ${primeraEnMayusculas(opcionComputadora)}${pcPequeno}`;
-    eleccionJugador_div.classList.add('gris');
-    setTimeout(() => eleccionJugador_div.classList.remove('gris'), 600);
-}
+    if (seleccionJugador === seleccionComputadora) {
+        mostrarResultado('Empate...', seleccionJugador, seleccionComputadora, 'gris', 'es igual a');
+    } else if (reglas[seleccionJugador].includes(seleccionComputadora)) {
+        actualizarPuntuacion(true);
+        mostrarResultado('Ganaste✔️', seleccionJugador, seleccionComputadora, 'verde', 'le gana a');
+    } else {
+        actualizarPuntuacion(false);
+        mostrarResultado('Perdiste❌', seleccionJugador, seleccionComputadora, 'rojo', 'pierde contra');
+    }
+};
 
 // para actualizar la puntuación
 function actualizarPuntuacion(ganaJugador) {
@@ -72,29 +82,62 @@ function actualizarPuntuacion(ganaJugador) {
     }
     puntuacionUsuario_span.innerHTML = puntajeJugador;
     puntuacionComputadora_span.innerHTML = puntajeComputadora;
-}
+    guardarPuntuacion();
+};
+
+// para guardar la puntuación en localStorage
+const guardarPuntuacion = () => {
+    localStorage.setItem('puntajeJugador', puntajeJugador);
+    localStorage.setItem('puntajeComputadora', puntajeComputadora);
+};
+
+// para cargar la puntuación directo desde localStorage
+const cargarPuntuacion = () => {
+    const puntajeGuardadoJugador = localStorage.getItem('puntajeJugador');
+    const puntajeGuardadoComputadora = localStorage.getItem('puntajeComputadora');
+    if (puntajeGuardadoJugador !== null) {
+        puntajeJugador = parseInt(puntajeGuardadoJugador);
+        puntuacionUsuario_span.innerHTML = puntajeJugador;
+    }
+    if (puntajeGuardadoComputadora !== null) {
+        puntajeComputadora = parseInt(puntajeGuardadoComputadora);
+        puntuacionComputadora_span.innerHTML = puntajeComputadora;
+    }
+};
 
 // resultado de cada round
 function mostrarResultado(mensaje, opcionUsuario, opcionComputadora, colorClase, mensajeResultado) {
     const vosPequeno = "(Vos)".fontsize(2).sup();
     const pcPequeno = "(PC)".fontsize(2).sup();
-    const eleccionJugador_div = document.getElementById(opcionUsuario);
     resultado_div.innerHTML = mensaje;
     resultadoReglas_div.innerHTML = `${primeraEnMayusculas(opcionUsuario)}${vosPequeno} ${mensajeResultado} ${primeraEnMayusculas(opcionComputadora)}${pcPequeno}`;
+    const eleccionJugador_div = document.getElementById(opcionUsuario);
     eleccionJugador_div.classList.add(colorClase);
     setTimeout(() => eleccionJugador_div.classList.remove(colorClase), 700);
-}
+};
 
 // para que las opciones tengan la primera palabra en mayúscula
 function primeraEnMayusculas(palabra) {
     return palabra.charAt(0).toUpperCase() + palabra.slice(1); // recomendación de ChatGTP para simplificar el código y no usar IF para modificar las palabras
-}
+};
 
-// escucha del evento click en las imágenes
-function escucharClicks() {
-    piedra_div.addEventListener('click', () => juego("piedra"));
-    papel_div.addEventListener('click', () => juego("papel")); 
-    tijeras_div.addEventListener('click', () => juego("tijeras"));
-}
+// para resetear la puntuación
+function resetearPuntuacion() {
+    puntajeJugador = 0;
+    puntajeComputadora = 0;
+    puntuacionUsuario_span.innerHTML = puntajeJugador;
+    puntuacionComputadora_span.innerHTML = puntajeComputadora;
+    localStorage.removeItem('puntajeJugador');
+    localStorage.removeItem('puntajeComputadora');
+    Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Puntajes en cero de nuevo...",
+        showConfirmButton: false,
+        toast: true,
+        timer: 1300
+      });
+};
 
-escucharClicks();
+// cargar la puntuación al inicio
+cargarPuntuacion();

@@ -1,0 +1,35 @@
+[{
+    "id": "piedra",
+    "nombre": "Piedra",
+    "descripcion": "Emoji de puño en el aire en WhatsApp",
+    "imagen": "./img/piedra.png"
+},
+
+{
+    "id": "papel",
+    "nombre": "Papel",
+    "descripcion": "Emoji de palma de mano levantada en WhatsApp",
+    "imagen": "./img/papel.png"
+},
+
+{
+    "id": "tijeras",
+    "nombre": "Tijeras",
+    "descripcion": "Emoji de dedos como tijeras en WhatsApp",
+    "imagen": "./img/tijeras.png"
+},
+
+{
+    "id": "lagarto",
+    "nombre": "Lagarto",
+    "descripcion": "Emoji de dedos formando un lagarto en WhatsApp",
+    "imagen": "./img/lagarto.png"
+},
+
+{
+    "id": "spock",
+    "nombre": "Spock",
+    "descripcion": "Emoji saludo vulcano en WhatsApp",
+    "imagen": "./img/spock.png"
+}
+]

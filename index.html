@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
-    <title>Piedra, papel o tijeras</title>
+    <title>Piedra, papel, tijeras, lagarto o spock</title>
 </head>
 
 <body>
@@ -16,39 +16,33 @@
         <div id="etiqueta-computadora" class="insignia">PC</div>
         <span id="puntuacion-usuario">0</span>:<span id="puntuacion-computadora">0</span>
     </div>
+    <button id="resetear-puntuacion" title="Para empezar el juego de nuevo, con ambos puntajes en cero">Limpiar puntaje</button>
+
 
     <div class="resultado">
-        <h3>Jugá piedra, papel o tijeras!</h3>
+        <h3>Elegí: Piedra, Papel, Tijeras, Lagarto o Spock!</h3>
         <p></p>
     </div>
 
     <div class="opciones">
-        <div class="opcion" id="piedra">
-            <!-- <button>👊</button> / alternativa: lo podría hacer con emojis, sin usar imágenes -->
-            <img src="./img/piedra.png" title="Piedra" alt="Emoji de puño de WhatsApp">
-        </div>
-        <div class="opcion" id="papel">
-            <img src="./img/papel.png" title="Papel" alt="Emoji de mano levantada de WhatsApp">
-        </div>
-
-        <div class="opcion" id="tijeras">
-            <img src="./img/tijeras.png" title="Tijeras" alt="Emoji dedos como tijeras de WhatsApp">
-        </div>
     </div>
 
     <div class="reglas">
         <h3>Las reglas son simples:</h3>
         <ul>
-            <li>1. Piedra rompe las Tijeras</li>
-            <li>2. Papel envuelve a Piedra</li>
-            <li>3. Tijeras cortan el Papel</li>
+            <li>1. Piedra 👊 rompe las Tijeras ✌️ y aplasta al Lagarto 🤏</li>
+            <li>2. Papel ✋ envuelve la Piedra 👊 y desaprueba a Spock 🖖</li>
+            <li>3. Tijeras ✌️ cortan el Papel ✋ y decapitan al Lagarto 🤏</li>
+            <li>4. Lagarto 🤏 se come el Papel ✋ y envenena a Spock 🖖</li>
+            <li>5. Spock 🖖 aplasta las Tijeras ✌️ y vaporiza la Piedra 👊</li>
         </ul>
     </div>
 
     <footer>
-        <p>Segunda entrega del proyecto Javascript • Comisión 61990 • 2024</p>
+        <p>Entrega final del proyecto Javascript • Comisión 61990 • 2024</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./main.js"></script>
 </body>
 
